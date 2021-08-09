@@ -83,27 +83,27 @@ GROUP BY Location, Population
 ORDER BY PercentPopulationInfected DESC
 """
 
-#Shows the percentage of the population that has recieved at least one vaccination
+#Shows the percentage of the population that are fully vacccinated
 rolling_vacs_query = """
-WITH PopvsVac (Continent, Location, Date, Population, New_Vaccinations, RollingPeopleVaccinated)
+WITH PopvsVac (Continent, Location, Date, Population, people_fully_vaccinated, PeopleFullyVaccinated)
 AS
 (
 SELECT dea.continent, dea.location, dea.date, dea.population, vac.new_vaccinations
-, SUM(CAST(vac.new_vaccinations AS INT)) OVER (PARTITION BY dea.Location Order BY dea.location, dea.Date) AS RollingPeopleVaccinated
+, MAX(CAST(vac.people_fully_vaccinated AS INT)) OVER (PARTITION BY dea.Location Order BY dea.location, dea.Date) AS PeopleFullyVaccinated
 FROM CovidDeaths dea
 JOIN CovidVaccines vac
 	ON dea.location = vac.location
 	AND dea.date = vac.date
 WHERE dea.continent IS NOT NULL
 )
-SELECT *, (RollingPeopleVaccinated/Population)*100 AS RollingVaccinatedPerc
+SELECT *, (PeopleFullyVaccinated/Population)*100 AS PeopleFullyVaccinatedPerc
 FROM PopvsVac
 """
 
 query2csv(total_deaths_and_cases_query,'data/totals.csv')
 query2csv(regional_deaths_query,'data/regional_deaths.csv')
 query2csv(perc_infected_query,'data/perc_infected.csv')
-query2csv(total_deaths_and_cases_query,'data/vaccinated.csv')
+query2csv(rolling_vacs_query,'data/vaccinated.csv')
 
 
 
