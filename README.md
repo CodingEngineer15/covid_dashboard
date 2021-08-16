@@ -11,4 +11,4 @@ Python 3 and sqlite were used for this project. To obtain the relevant python pa
 `pip3 install pandas sqlite3 sqlalchemy`
 
 ## Acknowledgements
-The data used for this project was obtained using the following <a href=https://ourworldindata.org/covid-deaths>link</a>. Special regards are given to the **Our World in Data** organisation for allowing their data to be freely available for use.
+The data used for this project was obtained using the following <a href=https://ourworldindata.org/covid-deaths>link</a>. Special regards are given to **Our World in Data** for allowing their data to be freely available for use.
